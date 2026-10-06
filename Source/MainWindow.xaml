@@ -1,0 +1,123 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+ Title="浮译 · Float Translate" Width="1080" Height="760" MinWidth="940" MinHeight="680" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="CanResize" Background="#F8FAFC" FontFamily="Segoe UI, Microsoft YaHei UI" Foreground="#202631">
+ <shell:WindowChrome.WindowChrome><shell:WindowChrome CaptionHeight="48" CornerRadius="14" ResizeBorderThickness="6" GlassFrameThickness="0"/></shell:WindowChrome.WindowChrome>
+ <Border BorderBrush="#A6DDE3EC" BorderThickness="1" Background="{DynamicResource ShellBrush}">
+  <Grid>
+   <Grid.ColumnDefinitions><ColumnDefinition Width="210"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+   <Border Background="{DynamicResource SidebarBrush}" BorderBrush="#96DDE5F0" BorderThickness="0,0,1,0">
+    <Grid Margin="20,28,20,20">
+     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+     <StackPanel Margin="8,10,0,36">
+      <Border Width="46" Height="46" CornerRadius="13" HorizontalAlignment="Left" Background="#007AFF"><TextBlock Text="译" Foreground="White" FontSize="26" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+      <TextBlock Text="浮译" FontSize="26" FontWeight="SemiBold" Margin="0,15,0,3"/>
+      <TextBlock Text="FLOAT TRANSLATE" FontSize="10" Foreground="#8390A3"/>
+     </StackPanel>
+     <StackPanel Grid.Row="1" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+      <Button x:Name="NavTranslate" Style="{DynamicResource NavButton}" Content="⇄    翻译" Background="#DCE8FA" Foreground="#006CE5"/>
+      <Button x:Name="NavHistory" Style="{DynamicResource NavButton}" Content="◷    最近翻译"/>
+      <Button x:Name="NavSettings" Style="{DynamicResource NavButton}" Content="⚙    设置"/>
+     </StackPanel>
+     <StackPanel Grid.Row="3" Margin="7,0,0,0">
+      <StackPanel Orientation="Horizontal"><Ellipse x:Name="StatusDot" Width="6" Height="6" Fill="#A3ADBB" Margin="0,0,7,0"/><TextBlock x:Name="SidebarStatus" Text="尚未配置 API" FontSize="12" Foreground="#7C8595"/></StackPanel>
+      <TextBlock Text="让语言，轻一点。" FontSize="12" Foreground="#9BA4B3" Margin="0,8,0,0"/>
+     </StackPanel>
+    </Grid>
+   </Border>
+   <Grid Grid.Column="1">
+    <Grid.RowDefinitions><RowDefinition Height="48"/><RowDefinition Height="*"/><RowDefinition Height="36"/></Grid.RowDefinitions>
+    <Grid Grid.Row="0" Margin="24,0,12,0">
+     <TextBlock Text="你的桌面翻译助手" FontSize="11" Foreground="#A1A9B7" VerticalAlignment="Center"/>
+     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+      <Button x:Name="MinimizeButton" Content="─" Width="40" Padding="0" Background="Transparent" ToolTip="最小化"/>
+      <Button x:Name="HideButton" Content="×" Width="40" Padding="0" FontSize="23" Background="Transparent" ToolTip="隐藏到系统托盘"/>
+     </StackPanel>
+    </Grid>
+    <Grid x:Name="TranslatePage" Grid.Row="1" Margin="32,18,32,0">
+     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+     <StackPanel><TextBlock Text="让语言，轻一点。" FontSize="30" FontWeight="SemiBold"/><TextBlock Text="一段文字，一次框选。翻译随手就来。" Foreground="#7C8595" Margin="0,10,0,0"/></StackPanel>
+     <Border Grid.Row="1" Margin="0,26,0,16" Padding="12,8" CornerRadius="13" BorderBrush="#C5E5EAF1" BorderThickness="1" Background="{DynamicResource CardBrush}">
+      <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+       <ComboBox x:Name="SourceLanguage" BorderThickness="0" ToolTip="原文语言"/>
+       <Button x:Name="SwapLanguages" Grid.Column="1" Content="⇄" FontSize="21" Background="Transparent" Padding="14,0" Margin="14,0" ToolTip="交换语言；自动检测时切换中英文"/>
+       <ComboBox x:Name="TargetLanguage" Grid.Column="2" BorderThickness="0" ToolTip="译文语言"/>
+      </Grid>
+     </Border>
+     <Grid Grid.Row="2">
+      <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="16"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+      <Border Background="{DynamicResource CardBrush}" BorderBrush="#C5E3E8F0" BorderThickness="1" CornerRadius="15" Padding="18">
+       <Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+        <Grid Margin="0,0,0,12"><TextBlock Text="原文" FontSize="12" Foreground="#7C8595"/><Button x:Name="ClearInput" Content="清空" HorizontalAlignment="Right" Padding="0" Background="Transparent" Foreground="#929BA9" FontSize="12"/></Grid>
+        <Grid Grid.Row="1"><TextBox x:Name="InputText" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" BorderThickness="0" Padding="0" FontSize="17" Background="Transparent"/>
+         <TextBlock x:Name="InputPlaceholder" Text="输入或粘贴需要翻译的文字…" Foreground="#B2BAC6" FontSize="17" IsHitTestVisible="False" Margin="1,3,0,0"/>
+        </Grid>
+        <Grid Grid.Row="2" Margin="0,16,0,0"><TextBlock x:Name="CharacterCount" Text="0 字" FontSize="11" Foreground="#A0A9B6" VerticalAlignment="Center"/><TextBlock Text="Ctrl + Enter 翻译" FontSize="11" Foreground="#A0A9B6" HorizontalAlignment="Right" VerticalAlignment="Center"/></Grid>
+       </Grid>
+      </Border>
+      <Border Grid.Column="2" Background="{DynamicResource ResultBrush}" BorderBrush="#C5DAE8FC" BorderThickness="1" CornerRadius="15" Padding="18">
+       <Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+        <Grid Margin="0,0,0,12"><TextBlock Text="译文" FontSize="12" Foreground="#6C8BB7"/><Button x:Name="CopyResult" Content="复制" HorizontalAlignment="Right" Padding="0" Background="Transparent" Foreground="#007AFF" FontSize="12" IsEnabled="False"/></Grid>
+        <Grid Grid.Row="1"><TextBox x:Name="ResultText" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" BorderThickness="0" Padding="0" FontSize="17" Background="Transparent"/>
+         <StackPanel x:Name="ResultPlaceholder" HorizontalAlignment="Center" VerticalAlignment="Center"><TextBlock Text="文 ⇄ A" FontSize="30" Foreground="#A6C6F3" HorizontalAlignment="Center"/><TextBlock Text="译文会出现在这里" FontSize="13" Foreground="#8DA5C6" Margin="0,14,0,0"/></StackPanel>
+        </Grid>
+        <StackPanel Grid.Row="2" Margin="0,16,0,0"><ProgressBar x:Name="MainProgress" Height="3" IsIndeterminate="True" Visibility="Collapsed" Foreground="#007AFF" Background="#DAE8FC"/><TextBlock x:Name="ResultMeta" Text="由你配置的大模型提供翻译" FontSize="11" Foreground="#8DA5C6" Margin="0,8,0,0"/></StackPanel>
+       </Grid>
+      </Border>
+     </Grid>
+     <StackPanel Grid.Row="3" Margin="0,18,0,4">
+      <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+       <TextBlock x:Name="TranslateStatus" Text="先在设置中连接你的大模型。" FontSize="12" Foreground="#7C8595" VerticalAlignment="Center" Margin="0,0,10,0"/>
+       <Button x:Name="CancelTranslate" Grid.Column="1" Content="取消" Visibility="Collapsed" Margin="0,0,8,0"/>
+       <Button x:Name="TranslateButton" Grid.Column="2" Content="翻译  ↗" Style="{DynamicResource PrimaryButton}" Padding="25,12"/>
+      </Grid>
+      <Grid Margin="0,22,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="16"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+       <Border Background="{DynamicResource ShortcutBrush}" CornerRadius="11" Padding="14,12"><StackPanel><TextBlock Text="选中文字，随手翻译" FontSize="12"/><TextBlock x:Name="SelectionHint" Text="Ctrl + Alt + T" Foreground="#8A96A8" FontSize="11" Margin="0,5,0,0"/></StackPanel></Border>
+       <Button x:Name="CaptureButton" Grid.Column="2" Padding="14,12" Background="{DynamicResource ShortcutBrush}" HorizontalContentAlignment="Left"><StackPanel><TextBlock Text="框选屏幕上的文字" FontSize="12"/><TextBlock x:Name="CaptureHint" Text="Ctrl + Alt + S" Foreground="#8A96A8" FontSize="11" Margin="0,5,0,0"/></StackPanel></Button>
+      </Grid>
+     </StackPanel>
+    </Grid>
+    <Grid x:Name="HistoryPage" Grid.Row="1" Margin="32,18,32,0" Visibility="Collapsed">
+     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+     <Grid><StackPanel><TextBlock Text="最近翻译" FontSize="30" FontWeight="SemiBold"/><TextBlock Text="保存在这台电脑上，随时回看。" Foreground="#7C8595" Margin="0,10,0,20"/></StackPanel><Button x:Name="ClearHistory" Content="清空记录" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,6,0,0"/></Grid>
+     <ScrollViewer Grid.Row="1"><StackPanel x:Name="HistoryItems"/></ScrollViewer>
+    </Grid>
+    <Grid x:Name="SettingsPage" Grid.Row="1" Margin="32,18,24,0" Visibility="Collapsed">
+     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+     <StackPanel Margin="0,0,0,20"><TextBlock Text="按你的习惯来。" FontSize="30" FontWeight="SemiBold"/><TextBlock Text="连接大模型，设置顺手的快捷键。" Foreground="#7C8595" Margin="0,10,0,0"/></StackPanel>
+     <ScrollViewer x:Name="SettingsScroll" Grid.Row="1" Padding="0,0,12,0">
+      <StackPanel>
+       <Border Background="{DynamicResource CardBrush}" BorderBrush="#C5E3E8F0" BorderThickness="1" CornerRadius="14" Padding="22" Margin="0,0,0,16">
+        <StackPanel>
+         <TextBlock Text="大模型 API" FontSize="17" FontWeight="SemiBold"/>
+         <TextBlock Text="支持 OpenAI 兼容的 Chat Completions 接口。" Style="{DynamicResource MutedText}" Margin="0,6,0,18"/>
+         <TextBlock Text="API 地址" FontSize="12" Margin="0,0,0,7"/><TextBox x:Name="ApiEndpoint"/>
+         <TextBlock Text="例如 https://api.openai.com/v1，也可以填写完整的 /chat/completions 地址。" Style="{DynamicResource MutedText}" Margin="0,6,0,15"/>
+         <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="API Key" FontSize="12" Margin="0,0,0,7"/><CheckBox x:Name="RevealKey" Grid.Column="1" Content="显示密钥" Margin="0,0,0,7" FontSize="12"/></Grid>
+         <Grid><PasswordBox x:Name="ApiKey"/><TextBox x:Name="ApiKeyVisible" Visibility="Collapsed"/></Grid>
+         <TextBlock Text="使用 Windows 用户加密保存；本地免鉴权服务可以留空。" Style="{DynamicResource MutedText}" Margin="0,6,0,15"/>
+         <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="16"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+          <StackPanel><TextBlock Text="文字模型" FontSize="12" Margin="0,0,0,7"/><TextBox x:Name="TextModel"/><TextBlock Text="填写服务商提供的模型 ID" Style="{DynamicResource MutedText}" Margin="0,6,0,0"/></StackPanel>
+          <StackPanel Grid.Column="2"><TextBlock Text="视觉模型（用于框选翻译）" FontSize="12" Margin="0,0,0,7"/><TextBox x:Name="VisionModel"/><TextBlock Text="留空时使用文字模型；必须支持图片输入" Style="{DynamicResource MutedText}" Margin="0,6,0,0"/></StackPanel>
+         </Grid>
+         <TextBlock Text="翻译偏好（可选）" FontSize="12" Margin="0,18,0,7"/><TextBox x:Name="TranslationPrompt" AcceptsReturn="True" Height="72" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+         <TextBlock Text="例如：保留技术术语，表达自然简洁，不添加解释。" Style="{DynamicResource MutedText}" Margin="0,6,0,0"/>
+        </StackPanel>
+       </Border>
+       <Border Background="{DynamicResource CardBrush}" BorderBrush="#C5E3E8F0" BorderThickness="1" CornerRadius="14" Padding="22" Margin="0,0,0,16">
+        <StackPanel><TextBlock Text="全局快捷键" FontSize="17" FontWeight="SemiBold"/><TextBlock Text="点击输入框后，直接按下新的组合键。至少包含 Ctrl、Alt 或 Win。" Style="{DynamicResource MutedText}" Margin="0,6,0,18"/>
+         <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="16"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+          <StackPanel><TextBlock Text="选中文字翻译" FontSize="12" Margin="0,0,0,7"/><TextBox x:Name="SelectionShortcut" IsReadOnly="True"/></StackPanel>
+          <StackPanel Grid.Column="2"><TextBlock Text="框选截图翻译" FontSize="12" Margin="0,0,0,7"/><TextBox x:Name="CaptureShortcut" IsReadOnly="True"/></StackPanel>
+         </Grid><Button x:Name="ResetShortcuts" Content="恢复默认快捷键" HorizontalAlignment="Left" Padding="0" Background="Transparent" Foreground="#007AFF" Margin="0,15,0,0"/>
+        </StackPanel>
+       </Border>
+       <Border Background="{DynamicResource CardBrush}" BorderBrush="#C5E3E8F0" BorderThickness="1" CornerRadius="14" Padding="22" Margin="0,0,0,16"><StackPanel><TextBlock Text="外观" FontSize="17" FontWeight="SemiBold" Margin="0,0,0,10"/><CheckBox x:Name="GlassEnabled" Content="启用毛玻璃效果"/><Grid Margin="0,10,0,8"><TextBlock Text="毛玻璃透明度" FontSize="12"/><TextBlock Text="{Binding Value, ElementName=GlassTransparency, StringFormat={}{0:0}%}" HorizontalAlignment="Right" FontSize="12" Foreground="#007AFF"/></Grid><Slider x:Name="GlassTransparency" Minimum="15" Maximum="70" Value="45" TickFrequency="5" IsSnapToTickEnabled="True" AutoToolTipPlacement="BottomRight"/><TextBlock Text="拖动即可预览。文字与按钮保持清晰，只有背景变得通透。" Style="{DynamicResource MutedText}" Margin="0,10,0,0"/><TextBlock x:Name="GlassSupportHint" Text="Windows 11 22H2 及以上使用系统毛玻璃；其他版本自动使用浅色背景。" Style="{DynamicResource MutedText}" Margin="0,7,0,0"/></StackPanel></Border>
+       <Border Background="{DynamicResource CardBrush}" BorderBrush="#C5E3E8F0" BorderThickness="1" CornerRadius="14" Padding="22" Margin="0,0,0,16"><StackPanel><TextBlock Text="日常使用" FontSize="17" FontWeight="SemiBold" Margin="0,0,0,10"/><CheckBox x:Name="KeepHistory" Content="保存最近 100 条翻译记录（不保存截图）"/><CheckBox x:Name="StartWithWindows" Content="登录 Windows 时自动启动并隐藏到托盘"/><TextBlock Text="关闭主窗口后继续在托盘运行。退出请右键点击托盘图标。" Style="{DynamicResource MutedText}" Margin="0,7,0,0"/><TextBlock Text="选词翻译适用于支持复制的程序；受保护内容可尝试框选。截图与文字仅发送至你填写的 API 服务。" Style="{DynamicResource MutedText}" Margin="0,8,0,0"/></StackPanel></Border>
+      </StackPanel>
+     </ScrollViewer>
+     <Grid Grid.Row="2" Margin="0,16,12,4"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock x:Name="SettingsStatus" Text="修改后点击保存并应用。" FontSize="12" Foreground="#7C8595" VerticalAlignment="Center" Margin="0,0,10,0"/><Button x:Name="TestApi" Grid.Column="1" Content="测试连接" Margin="0,0,8,0"/><Button x:Name="SaveSettings" Grid.Column="2" Content="保存并应用" Style="{DynamicResource PrimaryButton}"/></Grid>
+    </Grid>
+    <TextBlock Grid.Row="2" Text="浮译 1.2  ·  为每一次阅读留一点轻松" Foreground="#B1B8C3" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+   </Grid>
+  </Grid>
+ </Border>
+</Window>
